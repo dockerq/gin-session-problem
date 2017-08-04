@@ -40,7 +40,7 @@ func DoSomethine(c *gin.Context) {
 	}
 	session := sessions.Default(c)
 	userAccessToken := session.Get(userEmail)
-	fmt.Printf("[DoSomethine] user access token is %s\n", userAccessToken)
+	fmt.Printf("[DoSomethine] user access token is %v\n", userAccessToken)
 	c.JSON(http.StatusOK, nil)
 }
 
