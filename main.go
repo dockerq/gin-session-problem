@@ -39,6 +39,7 @@ func DoSomething(c *gin.Context) {
 		panic("can not get user email")
 	}
 	session := sessions.Default(c)
+	session.Save()
 	userAccessToken := session.Get(userEmail)
 	fmt.Printf("[DoSomethine] user access token is %v\n", userAccessToken)
 	c.JSON(http.StatusOK, nil)
