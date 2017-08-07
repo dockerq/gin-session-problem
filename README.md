@@ -100,3 +100,5 @@ if err != nil {
 }
 req.AddCookie(cookie)
 ```
+
+总结起来，还是自己关于[Cookie和Session](https://en.wikipedia.org/wiki/HTTP_cookie)的基础知识薄弱，没有深入了解[gin-contrib/session](https://github.com/gin-contrib/sessions)代码
