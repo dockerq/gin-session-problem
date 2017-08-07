@@ -28,7 +28,7 @@ func StartTestServer(t *testing.T) {
 
 		r.Use(sessions.Sessions("mysession", store))
 		r.GET("/pre", preSession)
-		r.GET("/do", DoSomethine)
+		r.GET("/do", DoSomething)
 		r.Run(":8081")
 		fmt.Println("start api server success.")
 	}()

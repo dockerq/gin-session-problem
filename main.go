@@ -20,7 +20,7 @@ func main() {
 
 	r.GET("/clear", clear)
 	r.GET("/pre", preSession)
-	r.GET("/do", DoSomethine)
+	r.GET("/do", DoSomething)
 	r.Run(":8000")
 }
 
@@ -33,7 +33,7 @@ func preSession(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
 
-func DoSomethine(c *gin.Context) {
+func DoSomething(c *gin.Context) {
 	userEmail := c.Query("user_email")
 	if userEmail == "" {
 		panic("can not get user email")
