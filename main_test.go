@@ -39,24 +39,32 @@ func StartTestServer(t *testing.T) {
 
 func TestSession(t *testing.T) {
 	StartTestServer(t)
-	getPreSession()
+	cookie := setAndGetCookie()
 
 	u := url.Values{}
 	u.Set("user_email", "test@mail.com")
 	testUrl := apiBaseUrl + "/do?" + u.Encode()
-	fmt.Printf("test url is %s\n", testUrl)
 
-	resp, err := http.Get(testUrl)
+	req, err := http.NewRequest("GET", testUrl, nil)
+	if err != nil {
+		logrus.Fatalf("generate req of url %s error: %v", testUrl, err)
+	}
+	req.AddCookie(cookie)
+	fmt.Printf("header of test session is %v\n", req.Header)
+	client := http.Client{}
+	resp, err := client.Do(req)
 	defer resp.Body.Close()
 
 	if err != nil {
 		t.Error(err)
 	}
-
+	cookies := resp.Cookies()
+	fmt.Printf("cookie of do session request is %v\n", cookies)
 	fmt.Println(resp.StatusCode)
+	fmt.Printf("resp header is %v\n", resp.Header)
 }
 
-func getPreSession() {
+func setAndGetCookie() *http.Cookie {
 	resp, err := http.Get(apiBaseUrl + "/pre")
 	if err != nil {
 		logrus.Fatal(err)
@@ -67,5 +75,11 @@ func getPreSession() {
 		logrus.Fatalf("pre session request error")
 	}
 
-	fmt.Printf("cookie of pre session request is %v\n", resp.Cookies())
+	cookies := resp.Cookies()
+	if len(cookies) < 1 {
+		logrus.Fatalf("cookie length expected to be 1")
+	}
+
+	fmt.Printf("response headers of set cookie is %v\n", resp.Header)
+	return cookies[0]
 }
