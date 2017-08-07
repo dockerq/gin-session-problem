@@ -88,3 +88,15 @@ ok      ginlab/session  2.010s
 
 ## 问题
 为什么`/pre`设置session后，请求`/do`却拿不到session？是没session没有配置正确还是其它原因？
+
+## 解决方法
+**本质上是Cookie和Session的问题，因为不同的库实现机制不同，所以需要充分了解库文档和代码正确配置和使用**
+
+在基于浏览器的测试情况下能测试通过是因为浏览器会在请求中加上本地的Cookie。而在我的`go test case`中并不是浏览器的使用场景，所以需要主动加上cookie。
+```
+req, err := http.NewRequest("GET", testUrl, nil)
+if err != nil {
+	logrus.Fatalf("generate req of url %s error: %v", testUrl, err)
+}
+req.AddCookie(cookie)
+```
